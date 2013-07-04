@@ -1,49 +1,65 @@
-use ExtUtils::MakeMaker;
 
-WriteMakefile1(
-    NAME         => 'Dancer2::Plugin::REST',
-    ABSTRACT     => "REST plugin for Dancer",
-    LICENSE      => 'perl',
-    VERSION_FROM => 'lib/Dancer2/Plugin/REST.pm',
-    
-    META_MERGE => {
-        resources => {
-            repository => 'http://github.com/yanick/Dancer2-Plugin-REST',
-        },
-    },
+use strict;
+use warnings;
 
-    BUILD_REQUIRES => {
-        'Test::More' => '0.87',
-    },
 
-    PREREQ_PM => {
-        'Dancer2' => 0,
-        'JSON'   => 0,
-    },
 
-    test => {TESTS => join( ' ', (glob( 't/*.t'), glob('t/*/*.t')))},
+use ExtUtils::MakeMaker 6.30;
+
+
+
+my %WriteMakefileArgs = (
+  "ABSTRACT" => "A plugin for writing RESTful apps with Dancer2",
+  "AUTHOR" => "Dancer Core Developers",
+  "BUILD_REQUIRES" => {
+    "Dancer2::Core::Request" => 0,
+    "Dancer2::ModuleLoader" => 0,
+    "Dancer2::Test" => 0,
+    "File::Find" => 0,
+    "File::Temp" => 0,
+    "JSON" => 0,
+    "Module::Build" => "0.3601",
+    "Test::More" => 0
+  },
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.30",
+    "Module::Build" => "0.3601"
+  },
+  "DISTNAME" => "Dancer2-Plugin-REST",
+  "EXE_FILES" => [],
+  "LICENSE" => "perl",
+  "NAME" => "Dancer2::Plugin::REST",
+  "PREREQ_PM" => {
+    "Carp" => 0,
+    "Dancer2" => 0,
+    "Dancer2::Plugin" => 0,
+    "strict" => 0,
+    "warnings" => 0
+  },
+  "VERSION" => "0.10",
+  "test" => {
+    "TESTS" => "t/*.t"
+  }
 );
 
-sub WriteMakefile1 {  #Written by Alexandr Ciornii, version 0.21. Added by eumm-upgrade.
-    my %params=@_;
-    my $eumm_version=$ExtUtils::MakeMaker::VERSION;
-    $eumm_version=eval $eumm_version;
-    die "EXTRA_META is deprecated" if exists $params{EXTRA_META};
-    die "License not specified" if not exists $params{LICENSE};
-    if ($params{BUILD_REQUIRES} and $eumm_version < 6.5503) {
-        #EUMM 6.5502 has problems with BUILD_REQUIRES
-        $params{PREREQ_PM}={ %{$params{PREREQ_PM} || {}} , %{$params{BUILD_REQUIRES}} };
-        delete $params{BUILD_REQUIRES};
-    }
-    delete $params{CONFIGURE_REQUIRES} if $eumm_version < 6.52;
-    delete $params{MIN_PERL_VERSION} if $eumm_version < 6.48;
-    delete $params{META_MERGE} if $eumm_version < 6.46;
-    delete $params{META_ADD} if $eumm_version < 6.46;
-    delete $params{LICENSE} if $eumm_version < 6.31;
-    delete $params{AUTHOR} if $] < 5.005;
-    delete $params{ABSTRACT_FROM} if $] < 5.005;
-    delete $params{BINARY_LOCATION} if $] < 5.005;
 
-    WriteMakefile(%params);
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
+  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
+  my $pp = $WriteMakefileArgs{PREREQ_PM};
+  for my $mod ( keys %$br ) {
+    if ( exists $pp->{$mod} ) {
+      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
+    }
+    else {
+      $pp->{$mod} = $br->{$mod};
+    }
+  }
 }
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
 

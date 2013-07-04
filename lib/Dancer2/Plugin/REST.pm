@@ -1,12 +1,16 @@
 package Dancer2::Plugin::REST;
+BEGIN {
+  $Dancer2::Plugin::REST::AUTHORITY = 'cpan:SUKRIA';
+}
+{
+  $Dancer2::Plugin::REST::VERSION = '0.10';
+}
+# ABSTRACT: A plugin for writing RESTful apps with Dancer2
 
 use strict;
 use warnings;
 
 use Carp 'croak';
-
-our $AUTHORITY = 'SUKRIA';
-our $VERSION   = '0.09';
 
 use Dancer2 ':syntax';
 use Dancer2::Plugin;
@@ -35,6 +39,7 @@ register prepare_serializer_for_format => sub {
 
     hook 'before' => sub {
         my $format = params->{'format'};
+        $format  ||= captures->{'format'} if captures;
         return unless defined $format;
 
         my $serializer = $serializers->{$format};
@@ -178,6 +183,14 @@ __END__
 
 Dancer2::Plugin::REST - A plugin for writing RESTful apps with Dancer2
 
+=head1 VERSION
+
+version 0.10
+
+=head1 DESCRIPTION
+
+This plugin helps you write a RESTful webservice with Dancer2.
+
 =head1 SYNOPSYS
 
     package MyWebService;
@@ -191,6 +204,10 @@ Dancer2::Plugin::REST - A plugin for writing RESTful apps with Dancer2
         User->find(params->{id});
     };
 
+    get qr{^/user/(?<id>\d+)\.(?<format>\w+)} => sub {
+        User->find(captures->{id});
+    };
+
     # curl http://mywebservice/user/42.json
     { "id": 42, "name": "John Foo", email: "john.foo@example.com"}
 
@@ -200,9 +217,19 @@ Dancer2::Plugin::REST - A plugin for writing RESTful apps with Dancer2
     name: "John Foo"
     email: "john.foo@example.com"
 
-=head1 DESCRIPTION
+=head1 CONFIGURATION
 
-This plugin helps you write a RESTful webservice with Dancer2.
+=head2 serializers
+
+The default format serializer hash which maps a given C<:format> to 
+a C<Dancer2::Serializer::*> serializer. Unless overriden in the 
+configuration, it defaults to:
+
+    serializers:
+      json: JSON
+      yml:  YAML
+      xml:  XML
+      dump: Dumper
 
 =head1 KEYWORDS
 
@@ -211,11 +238,14 @@ This plugin helps you write a RESTful webservice with Dancer2.
 When this pragma is used, a before filter is set by the plugin to automatically
 change the serializer when a format is detected in the URI.
 
-That means that each route you define with a B<:format> token will trigger a
-serializer definition, if the format is known.
+That means that each route you define with a B<:format> param or captures token 
+will trigger a serializer definition, if the format is known.
 
 This lets you define all the REST actions you like as regular Dancer2 route
 handlers, without explicitly handling the outgoing data format.
+
+Regexp routes will use the file-extension from captures->{'format'} to determine
+the serialization format.
 
 =head2 resource
 
@@ -283,5 +313,16 @@ Cuny.
 =head1 SEE ALSO
 
 L<Dancer2> L<http://en.wikipedia.org/wiki/Representational_State_Transfer>
+
+=head1 AUTHOR
+
+Dancer Core Developers
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2010 by Alexis Sukrieh.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut

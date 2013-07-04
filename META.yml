@@ -1,25 +1,35 @@
 ---
-abstract: 'REST plugin for Dancer'
+abstract: 'A plugin for writing RESTful apps with Dancer2'
 author:
-  - unknown
+  - 'Dancer Core Developers'
 build_requires:
-  Test::More: 0.87
+  Dancer2::Core::Request: 0
+  Dancer2::ModuleLoader: 0
+  Dancer2::Test: 0
+  File::Find: 0
+  File::Temp: 0
+  JSON: 0
+  Module::Build: 0.3601
+  Test::More: 0
 configure_requires:
-  ExtUtils::MakeMaker: 0
-dynamic_config: 1
-generated_by: 'ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.120921'
+  ExtUtils::MakeMaker: 6.30
+  Module::Build: 0.3601
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.300030, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: Dancer2-Plugin-REST
-no_index:
-  directory:
-    - t
-    - inc
+provides:
+  Dancer2::Plugin::REST:
+    file: lib/Dancer2/Plugin/REST.pm
+    version: 0.10
 requires:
+  Carp: 0
   Dancer2: 0
-  JSON: 0
-resources:
-  repository: http://github.com/yanick/Dancer2-Plugin-REST
-version: 0.09
+  Dancer2::Plugin: 0
+  strict: 0
+  warnings: 0
+version: 0.10
+x_authority: cpan:SUKRIA
