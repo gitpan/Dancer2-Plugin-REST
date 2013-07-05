@@ -55,11 +55,11 @@
    "provides" : {
       "Dancer2::Plugin::REST" : {
          "file" : "lib/Dancer2/Plugin/REST.pm",
-         "version" : "0.10"
+         "version" : "0.11"
       }
    },
    "release_status" : "stable",
-   "version" : "0.10",
+   "version" : "0.11",
    "x_authority" : "cpan:SUKRIA"
 }
 
