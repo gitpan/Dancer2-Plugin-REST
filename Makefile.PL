@@ -33,10 +33,11 @@ my %WriteMakefileArgs = (
     "Carp" => 0,
     "Dancer2" => 0,
     "Dancer2::Plugin" => 0,
+    "Moo::Role" => 0,
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.11",
+  "VERSION" => "0.12",
   "test" => {
     "TESTS" => "t/*.t"
   }
