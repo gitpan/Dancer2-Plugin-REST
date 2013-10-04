@@ -8,6 +8,7 @@ Makefile.PL
 README
 lib/Dancer2/Plugin/REST.pm
 t/00-compile.t
+t/00-report-prereqs.t
 t/02_prepare_serializer_for_format.t
 t/03_resource.t
 t/04_helpers.t

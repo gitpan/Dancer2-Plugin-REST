@@ -4,7 +4,7 @@
       "Dancer Core Developers"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300030, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Dist::Zilla version 4.300037, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -43,12 +43,16 @@
       },
       "test" : {
          "requires" : {
+            "Class::Load" : "0",
             "Dancer2::Core::Request" : "0",
-            "Dancer2::ModuleLoader" : "0",
             "Dancer2::Test" : "0",
-            "File::Find" : "0",
-            "File::Temp" : "0",
+            "ExtUtils::MakeMaker" : "0",
+            "File::Spec" : "0",
+            "File::Spec::Functions" : "0",
+            "IO::Handle" : "0",
+            "IPC::Open3" : "0",
             "JSON" : "0",
+            "List::Util" : "0",
             "Test::More" : "0"
          }
       }
@@ -56,11 +60,19 @@
    "provides" : {
       "Dancer2::Plugin::REST" : {
          "file" : "lib/Dancer2/Plugin/REST.pm",
-         "version" : "0.12"
+         "version" : "0.13"
       }
    },
    "release_status" : "stable",
-   "version" : "0.12",
+   "resources" : {
+      "homepage" : "https://github.com/yanick/Dancer2-Plugin-REST",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/yanick/Dancer2-Plugin-REST.git",
+         "web" : "https://github.com/yanick/Dancer2-Plugin-REST"
+      }
+   },
+   "version" : "0.13",
    "x_authority" : "cpan:SUKRIA"
 }
 

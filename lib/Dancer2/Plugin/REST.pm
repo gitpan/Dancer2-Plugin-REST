@@ -3,7 +3,7 @@ BEGIN {
   $Dancer2::Plugin::REST::AUTHORITY = 'cpan:SUKRIA';
 }
 {
-  $Dancer2::Plugin::REST::VERSION = '0.12';
+  $Dancer2::Plugin::REST::VERSION = '0.13';
 }
 # ABSTRACT: A plugin for writing RESTful apps with Dancer2
 
@@ -12,7 +12,7 @@ use warnings;
 
 use Carp 'croak';
 
-use Dancer2 ':syntax';
+use Dancer2;
 use Dancer2::Plugin;
 
 use Moo::Role;
@@ -39,27 +39,29 @@ register prepare_serializer_for_format => sub {
         }
     );
 
-    hook 'before' => sub {
-        my $format = params->{'format'};
-        $format  ||= captures->{'format'} if captures;
-        return unless defined $format;
+    $app->hook(
+        'before' => sub {
+            my $format = $app->params->{'format'};
+            $format ||= $app->captures->{'format'} if $app->captures;
 
-        my $serializer = $serializers->{$format};
+            return unless defined $format;
 
-        unless( $serializer ) {
-            return send_error "unsupported format requested: " . $format, 404;
+            my $serializer = $serializers->{$format};
+
+            unless ($serializer) {
+                return $app->send_error(
+                    'unsupported format requested: ' . $format, 404);
+            }
+
+            $app->set(serializer => $serializer);
+            my $ct = $content_types->{$format} || setting('content_type');
+            $app->content_type($ct);
         }
-
-        set serializer => $serializer;
-        my $ct = $content_types->{$format} || setting('content_type');
-        content_type $ct;
-    };
+    );
 };
 
 register resource => sub {
-    my $self = shift;
-
-    my ($resource, %triggers) = @_;
+    my ($dsl, $resource, %triggers) = plugin_args(@_);
 
     my %actions = (
         get    => 'get',
@@ -69,25 +71,25 @@ register resource => sub {
     );
 
     croak "resource should be given with triggers"
-      unless defined $resource
-             and grep { $triggers{$_} } keys %actions;
+      unless defined $resource && grep { $triggers{$_} } keys %actions;
 
-    while( my( $action, $code ) = each %triggers ) {
-            $self->app->add_route( 
-                method => $actions{$action},
-                regexp => $_,
-                code   => $code,
-            ) for map { sprintf $_, '/:id' x ($action ne 'create') }
-                        "/${resource}%s.:format", "/${resource}%s";
+    while (my ($action, $code) = each %triggers) {
+        $dsl->app->add_route(
+            method => $actions{$action},
+            regexp => $_,
+            code   => $code,
+          )
+          for map { sprintf $_, '/:id' x ($action ne 'create') }
+          "/${resource}%s.:format", "/${resource}%s";
     }
 };
 
 register send_entity => sub {
-    my ($entity, $http_code) = @_;
+    my ($dsl, $entity, $http_code) = plugin_args(@_);
 
     $http_code ||= 200;
 
-    status($http_code);
+    $dsl->status($http_code);
     $entity;
 };
 
@@ -164,16 +166,13 @@ for my $code (keys %http_codes) {
     $helper_name = "status_${helper_name}";
 
     register $helper_name => sub {
-        shift;
+        my $dsl = shift;
 
-        send_entity(
-            ( $code >= 400 ? {error => $_[0]} : $_[0] ),
-            $code
-        );
+        $dsl->send_entity(($code >= 400 ? {error => $_[0]} : $_[0]), $code);
     };
 }
 
-register_plugin for_versions => [1,2];
+register_plugin for_versions => [2];
 
 1;
 
@@ -187,7 +186,7 @@ Dancer2::Plugin::REST - A plugin for writing RESTful apps with Dancer2
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 DESCRIPTION
 
