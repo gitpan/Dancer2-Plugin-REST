@@ -28,7 +28,7 @@ name: Dancer2-Plugin-REST
 provides:
   Dancer2::Plugin::REST:
     file: lib/Dancer2/Plugin/REST.pm
-    version: 0.13
+    version: 0.14
 requires:
   Carp: 0
   Dancer2: 0
@@ -39,5 +39,5 @@ requires:
 resources:
   homepage: https://github.com/yanick/Dancer2-Plugin-REST
   repository: https://github.com/yanick/Dancer2-Plugin-REST.git
-version: 0.13
+version: 0.14
 x_authority: cpan:SUKRIA

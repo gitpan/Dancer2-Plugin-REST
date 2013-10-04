@@ -3,7 +3,7 @@ BEGIN {
   $Dancer2::Plugin::REST::AUTHORITY = 'cpan:SUKRIA';
 }
 {
-  $Dancer2::Plugin::REST::VERSION = '0.13';
+  $Dancer2::Plugin::REST::VERSION = '0.14';
 }
 # ABSTRACT: A plugin for writing RESTful apps with Dancer2
 
@@ -186,7 +186,7 @@ Dancer2::Plugin::REST - A plugin for writing RESTful apps with Dancer2
 
 =head1 VERSION
 
-version 0.13
+version 0.14
 
 =head1 DESCRIPTION
 
