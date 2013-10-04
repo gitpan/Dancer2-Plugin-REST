@@ -18,7 +18,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2-Plugin-REST",
-  "dist_version" => "0.14",
+  "dist_version" => "0.20",
   "license" => "perl",
   "module_name" => "Dancer2::Plugin::REST",
   "recommends" => {},

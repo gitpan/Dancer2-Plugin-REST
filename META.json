@@ -60,7 +60,7 @@
    "provides" : {
       "Dancer2::Plugin::REST" : {
          "file" : "lib/Dancer2/Plugin/REST.pm",
-         "version" : "0.14"
+         "version" : "0.20"
       }
    },
    "release_status" : "stable",
@@ -72,7 +72,7 @@
          "web" : "https://github.com/yanick/Dancer2-Plugin-REST"
       }
    },
-   "version" : "0.14",
+   "version" : "0.20",
    "x_authority" : "cpan:SUKRIA"
 }
 
