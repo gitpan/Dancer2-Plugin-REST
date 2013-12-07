@@ -3,7 +3,7 @@ BEGIN {
   $Dancer2::Plugin::REST::AUTHORITY = 'cpan:SUKRIA';
 }
 {
-  $Dancer2::Plugin::REST::VERSION = '0.20';
+  $Dancer2::Plugin::REST::VERSION = '0.21';
 }
 # ABSTRACT: A plugin for writing RESTful apps with Dancer2
 
@@ -14,15 +14,16 @@ use Carp 'croak';
 
 use Dancer2;
 use Dancer2::Plugin;
+use Class::Load qw/ try_load_class /;
 
 use Moo::Role;
 
 with 'Dancer2::Plugin';
 
+# [todo] - add XML support
 my $content_types = {
     json => 'application/json',
     yml  => 'text/x-yaml',
-    xml  => 'application/xml',
 };
 
 register prepare_serializer_for_format => sub {
@@ -32,15 +33,16 @@ register prepare_serializer_for_format => sub {
     my $serializers = (
         ($conf && exists $conf->{serializers})
         ? $conf->{serializers}
-        : { 'json' => 'JSON',
-            'yml'  => 'YAML',
-            'xml'  => 'XML',
-            'dump' => 'Dumper',
+        : { 'json' => 'Dancer2::Serializer::JSON',
+            'yml'  => 'Dancer2::Serializer::YAML',
+            'dump' => 'Dancer2::Serializer::Dumper',
         }
     );
 
     $app->hook(
         'before' => sub {
+            my $context = shift;
+
             my $format = $app->params->{'format'};
             $format ||= $app->captures->{'format'} if $app->captures;
 
@@ -48,14 +50,20 @@ register prepare_serializer_for_format => sub {
 
             my $serializer = $serializers->{$format};
 
-            unless ($serializer) {
+            unless ($serializer and try_load_class( $serializer ) ) {
                 return $app->send_error(
                     'unsupported format requested: ' . $format, 404);
             }
 
-            $app->set(serializer => $serializer);
-            my $ct = $content_types->{$format} || setting('content_type');
-            $app->content_type($ct);
+            my $ct = $content_types->{$format} || $app->setting('content_type');
+
+            $context->response( 
+                Dancer2::Core::Response->new(
+                    serializer   => $serializer->new,
+                    content_type => $ct,
+                )
+            );
+
         }
     );
 };
@@ -186,7 +194,7 @@ Dancer2::Plugin::REST - A plugin for writing RESTful apps with Dancer2
 
 =head1 VERSION
 
-version 0.20
+version 0.21
 
 =head1 DESCRIPTION
 
@@ -229,7 +237,6 @@ configuration, it defaults to:
     serializers:
       json: JSON
       yml:  YAML
-      xml:  XML
       dump: Dumper
 
 =head1 KEYWORDS

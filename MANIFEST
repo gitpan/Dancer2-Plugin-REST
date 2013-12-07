@@ -14,6 +14,7 @@ t/03_resource.t
 t/04_helpers.t
 t/04_plugin_settings.t
 t/05_named_captures.t
+t/06_tcp_server.t
 t/release-distmeta.t
 t/release-no-tabs.t
 t/release-pod-syntax.t

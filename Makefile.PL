@@ -24,6 +24,7 @@ my %WriteMakefileArgs = (
   "NAME" => "Dancer2::Plugin::REST",
   "PREREQ_PM" => {
     "Carp" => 0,
+    "Class::Load" => 0,
     "Dancer2" => 0,
     "Dancer2::Plugin" => 0,
     "Moo::Role" => 0,
@@ -31,49 +32,56 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
-    "Class::Load" => 0,
     "Dancer2::Core::Request" => 0,
     "Dancer2::Test" => 0,
+    "Data::Dumper" => 0,
     "ExtUtils::MakeMaker" => 0,
     "File::Spec" => 0,
     "File::Spec::Functions" => 0,
     "IO::Handle" => 0,
     "IPC::Open3" => 0,
     "JSON" => 0,
+    "LWP::UserAgent" => 0,
     "List::Util" => 0,
-    "Test::More" => 0
+    "Test::More" => 0,
+    "Test::TCP" => 0
   },
-  "VERSION" => "0.20",
+  "VERSION" => "0.21",
   "test" => {
     "TESTS" => "t/*.t"
   }
 );
 
 
-unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
-  my $tr = delete $WriteMakefileArgs{TEST_REQUIRES};
-  my $br = $WriteMakefileArgs{BUILD_REQUIRES};
-  for my $mod ( keys %$tr ) {
-    if ( exists $br->{$mod} ) {
-      $br->{$mod} = $tr->{$mod} if $tr->{$mod} > $br->{$mod};
-    }
-    else {
-      $br->{$mod} = $tr->{$mod};
-    }
-  }
-}
+my %FallbackPrereqs = (
+  "Carp" => 0,
+  "Class::Load" => 0,
+  "Dancer2" => 0,
+  "Dancer2::Core::Request" => 0,
+  "Dancer2::Plugin" => 0,
+  "Dancer2::Test" => 0,
+  "Data::Dumper" => 0,
+  "ExtUtils::MakeMaker" => 0,
+  "File::Spec" => 0,
+  "File::Spec::Functions" => 0,
+  "IO::Handle" => 0,
+  "IPC::Open3" => 0,
+  "JSON" => 0,
+  "LWP::UserAgent" => 0,
+  "List::Util" => 0,
+  "Module::Build" => "0.3601",
+  "Moo::Role" => 0,
+  "Test::More" => 0,
+  "Test::TCP" => 0,
+  "strict" => 0,
+  "warnings" => 0
+);
 
-unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
-  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
-  my $pp = $WriteMakefileArgs{PREREQ_PM};
-  for my $mod ( keys %$br ) {
-    if ( exists $pp->{$mod} ) {
-      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
-    }
-    else {
-      $pp->{$mod} = $br->{$mod};
-    }
-  }
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
+  delete $WriteMakefileArgs{TEST_REQUIRES};
+  delete $WriteMakefileArgs{BUILD_REQUIRES};
+  $WriteMakefileArgs{PREREQ_PM} = \%FallbackPrereqs;
 }
 
 delete $WriteMakefileArgs{CONFIGURE_REQUIRES}

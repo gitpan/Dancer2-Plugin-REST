@@ -16,16 +16,19 @@ my @modules = qw(
   Dancer2::Core::Request
   Dancer2::Plugin
   Dancer2::Test
+  Data::Dumper
   ExtUtils::MakeMaker
   File::Spec
   File::Spec::Functions
   IO::Handle
   IPC::Open3
   JSON
+  LWP::UserAgent
   List::Util
   Module::Build
   Moo::Role
   Test::More
+  Test::TCP
   strict
   warnings
 );
