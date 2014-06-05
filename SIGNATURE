@@ -1,0 +1,42 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.73.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 65404b6ee594a924aba00cd8724bc7f936fb6454 Build.PL
+SHA1 969bb94f15a2b20b623d2aef4bdf75055288d7f9 Changes
+SHA1 81684a4780821a62c52a92e6071c13f07a57f632 INSTALL
+SHA1 275383eac567137660ff0ae7fd02ee0ac280093e LICENSE
+SHA1 59a338f95705417c9b63dab2e0726b59eeb1a971 MANIFEST
+SHA1 5bc8aee4fc191b07f4864a1590dc11975ebb4a40 META.json
+SHA1 39c825ccecc6afdae0f736d32c1893b545e54b29 META.yml
+SHA1 c6f8f07bc8f9ac4ccfbf11a2ab7f2fbbd19f44b2 README
+SHA1 26dd487cf9cb80e4b14730ab48b6a275a723d231 README.mkdn
+SHA1 d38963928ef6e0c3d2b7c5fbc8adfd2db187b29f lib/Dancer2/Plugin/REST.pm
+SHA1 a3bea22d3fbc37ca4b5ad8546390579abbb9141e t/00-compile.t
+SHA1 68bbea1ece5a4835a299c2a9c2864f9ff8fdf6e7 t/000-report-versions-tiny.t
+SHA1 d5845447155b004d30f5bb603d9fbd1b63f10d93 t/02_prepare_serializer_for_format.t
+SHA1 0a8c2809bac263bb2d23eb9adc254ade3adc5d03 t/03_resource.t
+SHA1 d06c6b3190fd6ca0e1f638a9df32e0e3362bb1e4 t/04_helpers.t
+SHA1 113b512cdcc23c0b88c60513908dd59beb763553 t/04_plugin_settings.t
+SHA1 c915793dccfc0639bc44883854d0e94a637aba38 t/05_named_captures.t
+SHA1 d2705253f5857c2aa924c98797d124308657098f t/06_tcp_server.t
+SHA1 ec3f84bfd7a9ce3246e7592f4134100c6b5ce02b xt/release/unused-vars.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAlOQWNEACgkQ34Hwf+GwC4xaJQCfXb2QHkjwt9YUCNN6xGZRmFID
+BT4AnR5NrH6ZprlX2XNi2DwdbSR+7grf
+=WSsx
+-----END PGP SIGNATURE-----

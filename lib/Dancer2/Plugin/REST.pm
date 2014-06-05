@@ -2,17 +2,14 @@ package Dancer2::Plugin::REST;
 BEGIN {
   $Dancer2::Plugin::REST::AUTHORITY = 'cpan:SUKRIA';
 }
-{
-  $Dancer2::Plugin::REST::VERSION = '0.21';
-}
 # ABSTRACT: A plugin for writing RESTful apps with Dancer2
-
+$Dancer2::Plugin::REST::VERSION = '0.22';
 use strict;
 use warnings;
 
 use Carp 'croak';
 
-use Dancer2;
+use Dancer2 0.140001;
 use Dancer2::Plugin;
 use Class::Load qw/ try_load_class /;
 
@@ -27,49 +24,46 @@ my $content_types = {
 };
 
 register prepare_serializer_for_format => sub {
-    my $app = shift;
+    my $dsl = shift;
 
     my $conf        = plugin_setting;
     my $serializers = (
         ($conf && exists $conf->{serializers})
         ? $conf->{serializers}
-        : { 'json' => 'Dancer2::Serializer::JSON',
-            'yml'  => 'Dancer2::Serializer::YAML',
-            'dump' => 'Dancer2::Serializer::Dumper',
+        : { 'json' => 'JSON',
+            'yml'  => 'YAML',
+            'dump' => 'Dumper',
         }
     );
 
-    $app->hook(
+    $dsl->hook(
         'before' => sub {
-            my $context = shift;
-
-            my $format = $app->params->{'format'};
-            $format ||= $app->captures->{'format'} if $app->captures;
-
+            my $format = $dsl->params->{'format'};
+            $format  ||= $dsl->captures->{'format'} if $dsl->captures;
             return unless defined $format;
 
             my $serializer = $serializers->{$format};
-
-            unless ($serializer and try_load_class( $serializer ) ) {
-                return $app->send_error(
-                    'unsupported format requested: ' . $format, 404);
+            
+            unless( $serializer ) {
+                return $dsl->send_error("unsupported format requested: " . $format, 404);
             }
 
-            my $ct = $content_types->{$format} || $app->setting('content_type');
+            $dsl->set(serializer => $serializer);
+            $dsl->context->response( Dancer2::Core::Response->new(
+                %{ $dsl->context->response },
+                serializer => $dsl->set('serializer'),
+            ) );
 
-            $context->response( 
-                Dancer2::Core::Response->new(
-                    serializer   => $serializer->new,
-                    content_type => $ct,
-                )
-            );
-
+            my $ct = $content_types->{$format} || $dsl->setting('content_type');
+            $dsl->content_type($ct);
         }
     );
 };
 
 register resource => sub {
-    my ($dsl, $resource, %triggers) = plugin_args(@_);
+    my $dsl = shift;
+
+    my ($resource, %triggers) = @_;
 
     my %actions = (
         get    => 'get',
@@ -79,21 +73,21 @@ register resource => sub {
     );
 
     croak "resource should be given with triggers"
-      unless defined $resource && grep { $triggers{$_} } keys %actions;
+      unless defined $resource
+             and grep { $triggers{$_} } keys %actions;
 
-    while (my ($action, $code) = each %triggers) {
-        $dsl->app->add_route(
-            method => $actions{$action},
-            regexp => $_,
-            code   => $code,
-          )
-          for map { sprintf $_, '/:id' x ($action ne 'create') }
-          "/${resource}%s.:format", "/${resource}%s";
+    while( my( $action, $code ) = each %triggers ) {
+            $dsl->app->add_route( 
+                method => $actions{$action},
+                regexp => $_,
+                code   => $code,
+            ) for map { sprintf $_, '/:id' x ($action ne 'create') }
+                        "/${resource}%s.:format", "/${resource}%s";
     }
 };
 
 register send_entity => sub {
-    my ($dsl, $entity, $http_code) = plugin_args(@_);
+    my ($dsl, $entity, $http_code) = @_;
 
     $http_code ||= 200;
 
@@ -176,7 +170,10 @@ for my $code (keys %http_codes) {
     register $helper_name => sub {
         my $dsl = shift;
 
-        $dsl->send_entity(($code >= 400 ? {error => $_[0]} : $_[0]), $code);
+        $dsl->send_entity(
+            ( $code >= 400 ? {error => $_[0]} : $_[0] ),
+            $code
+        );
     };
 }
 
@@ -188,13 +185,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Plugin::REST - A plugin for writing RESTful apps with Dancer2
 
 =head1 VERSION
 
-version 0.21
+version 0.22
 
 =head1 DESCRIPTION
 
