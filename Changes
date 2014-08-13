@@ -1,5 +1,12 @@
 Revision history for Dancer2-Plugin-REST
 
+0.23_00 2014-08-13
+ [MISC]
+ - Compatibility with Dancer2's v0.149000_01 changes.
+
+ [STATISTICS]
+ - code churn: 2 files changed, 61 insertions(+), 62 deletions(-)
+
 0.22 2014-06-05
  [BUG FIXES]
  - Fix tests (and code itself) to work with Dancer2 v0.140001. (GH#2,

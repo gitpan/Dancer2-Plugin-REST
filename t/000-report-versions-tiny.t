@@ -50,7 +50,7 @@ sub pmver {
 
 eval { $v .= pmver('Carp','any version') };
 eval { $v .= pmver('Class::Load','any version') };
-eval { $v .= pmver('Dancer2','0.140001') };
+eval { $v .= pmver('Dancer2','0.149000_01') };
 eval { $v .= pmver('Dancer2::Core::Request','any version') };
 eval { $v .= pmver('Dancer2::Plugin','any version') };
 eval { $v .= pmver('Dancer2::Test','any version') };

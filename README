@@ -2,7 +2,7 @@ NAME
     Dancer2::Plugin::REST - A plugin for writing RESTful apps with Dancer2
 
 VERSION
-    version 0.22
+    version 0.23_00
 
 DESCRIPTION
     This plugin helps you write a RESTful webservice with Dancer2.

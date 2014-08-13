@@ -4,7 +4,7 @@ Dancer2::Plugin::REST - A plugin for writing RESTful apps with Dancer2
 
 # VERSION
 
-version 0.22
+version 0.23\_00
 
 # DESCRIPTION
 
@@ -56,7 +56,7 @@ configuration, it defaults to:
 When this pragma is used, a before filter is set by the plugin to automatically
 change the serializer when a format is detected in the URI.
 
-That means that each route you define with a __:format__ param or captures token 
+That means that each route you define with a **:format** param or captures token 
 will trigger a serializer definition, if the format is known.
 
 This lets you define all the REST actions you like as regular Dancer2 route
@@ -111,13 +111,13 @@ Set the HTTP status to 202
 
     status_bad_request("user foo can't be found");
 
-Set the HTTP status to 400. This function as for argument a scalar that will be used under the key __error__.
+Set the HTTP status to 400. This function as for argument a scalar that will be used under the key **error**.
 
 ### status\_not\_found
 
     status_not_found("users doesn't exists");
 
-Set the HTTP status to 404. This function as for argument a scalar that will be used under the key __error__.
+Set the HTTP status to 404. This function as for argument a scalar that will be used under the key **error**.
 
 # LICENCE
 

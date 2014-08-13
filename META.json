@@ -4,7 +4,7 @@
       "Dancer Core Developers"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.016, CPAN::Meta::Converter version 2.140640",
+   "generated_by" : "Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.140640",
    "license" : [
       "perl_5"
    ],
@@ -33,7 +33,7 @@
          "requires" : {
             "Carp" : "0",
             "Class::Load" : "0",
-            "Dancer2" : "0.140001",
+            "Dancer2" : "0.149000_01",
             "Dancer2::Plugin" : "0",
             "Moo::Role" : "0",
             "strict" : "0",
@@ -60,10 +60,10 @@
    "provides" : {
       "Dancer2::Plugin::REST" : {
          "file" : "lib/Dancer2/Plugin/REST.pm",
-         "version" : "0.22"
+         "version" : "0.23_00"
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/perldancer/Dancer2-Plugin-REST/issues"
@@ -75,7 +75,7 @@
          "web" : "https://github.com/perldancer/Dancer2-Plugin-REST"
       }
    },
-   "version" : "0.22",
+   "version" : "0.23_00",
    "x_authority" : "cpan:SUKRIA"
 }
 

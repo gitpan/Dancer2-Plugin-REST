@@ -3,13 +3,13 @@ BEGIN {
   $Dancer2::Plugin::REST::AUTHORITY = 'cpan:SUKRIA';
 }
 # ABSTRACT: A plugin for writing RESTful apps with Dancer2
-$Dancer2::Plugin::REST::VERSION = '0.22';
+$Dancer2::Plugin::REST::VERSION = '0.23_00';
 use strict;
 use warnings;
 
 use Carp 'croak';
 
-use Dancer2 0.140001;
+use Dancer2 0.149000_01;
 use Dancer2::Plugin;
 use Class::Load qw/ try_load_class /;
 
@@ -49,8 +49,8 @@ register prepare_serializer_for_format => sub {
             }
 
             $dsl->set(serializer => $serializer);
-            $dsl->context->response( Dancer2::Core::Response->new(
-                %{ $dsl->context->response },
+            $dsl->app->set_response( Dancer2::Core::Response->new(
+                %{ $dsl->app->response },
                 serializer => $dsl->set('serializer'),
             ) );
 
@@ -193,7 +193,7 @@ Dancer2::Plugin::REST - A plugin for writing RESTful apps with Dancer2
 
 =head1 VERSION
 
-version 0.22
+version 0.23_00
 
 =head1 DESCRIPTION
 
