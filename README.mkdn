@@ -4,7 +4,7 @@ Dancer2::Plugin::REST - A plugin for writing RESTful apps with Dancer2
 
 # VERSION
 
-version 0.23\_00
+version 0.24
 
 # DESCRIPTION
 

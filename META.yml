@@ -11,15 +11,15 @@ build_requires:
   IO::Handle: '0'
   IPC::Open3: '0'
   JSON: '0'
-  Module::Build: '0.3601'
+  Module::Build: '0.28'
   Module::Runtime: '0'
   Plack::Test: '0'
   Test::More: '0.88'
   perl: '5.006'
 configure_requires:
-  Module::Build: '0.3601'
+  Module::Build: '0.28'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.140640'
+generated_by: 'Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.140640'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -28,7 +28,7 @@ name: Dancer2-Plugin-REST
 provides:
   Dancer2::Plugin::REST:
     file: lib/Dancer2/Plugin/REST.pm
-    version: 0.23_00
+    version: '0.24'
 requires:
   Carp: '0'
   Class::Load: '0'
@@ -41,5 +41,5 @@ resources:
   bugtracker: https://github.com/perldancer/Dancer2-Plugin-REST/issues
   homepage: http://search.cpan.org/dist/Dancer2-Plugin-REST/
   repository: https://github.com/perldancer/Dancer2-Plugin-REST.git
-version: 0.23_00
+version: '0.24'
 x_authority: cpan:SUKRIA

@@ -1,5 +1,12 @@
 Revision history for Dancer2-Plugin-REST
 
+0.24 2014-09-01
+ [MISC]
+ - D2 v1.150000 is out, turn v0.23_00 into general availability release.
+
+ [STATISTICS]
+ - code churn: 3 files changed, 9 insertions(+), 3 deletions(-)
+
 0.23_00 2014-08-13
  [MISC]
  - Compatibility with Dancer2's v0.149000_01 changes.
