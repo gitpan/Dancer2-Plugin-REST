@@ -12,7 +12,6 @@ on 'build' => sub {
 
 on 'test' => sub {
   requires "Dancer2::Core::Request" => "0";
-  requires "Dancer2::Test" => "0";
   requires "Data::Dumper" => "0";
   requires "File::Spec" => "0";
   requires "HTTP::Request::Common" => "0";

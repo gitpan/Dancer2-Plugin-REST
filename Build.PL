@@ -18,7 +18,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2-Plugin-REST",
-  "dist_version" => "0.24",
+  "dist_version" => "0.25",
   "license" => "perl",
   "module_name" => "Dancer2::Plugin::REST",
   "recommends" => {},
@@ -35,7 +35,6 @@ my %module_build_args = (
   "script_files" => [],
   "test_requires" => {
     "Dancer2::Core::Request" => 0,
-    "Dancer2::Test" => 0,
     "Data::Dumper" => 0,
     "File::Spec" => 0,
     "HTTP::Request::Common" => 0,
@@ -52,7 +51,6 @@ my %module_build_args = (
 
 my %fallback_build_requires = (
   "Dancer2::Core::Request" => 0,
-  "Dancer2::Test" => 0,
   "Data::Dumper" => 0,
   "File::Spec" => 0,
   "HTTP::Request::Common" => 0,

@@ -2,6 +2,8 @@ use strict;
 use warnings;
 use Module::Runtime qw(use_module);
 use Test::More import => ['!pass'];
+use Plack::Test;
+use HTTP::Request::Common;
 
 plan skip_all => "JSON is needed for this test"
     unless use_module('JSON');
@@ -26,26 +28,27 @@ my $yaml = YAML::Dump($data);
         $data;
     };
 }
-use Dancer2::Test apps => [ 'Webservice' ];
+
+my $plack_test = Plack::Test->create( Webservice->to_app );
 
 my @tests = (
     {
-        request => [GET => '/'],
+        path => '/',
         content_type => qr'text/html',
         response => 'root',
     },
-    { 
-        request => [GET => '/foo.json'],
+    {
+        path => '/foo.json',
         content_type => qr'application/json',
         response => $json
     },
-    { 
-        request => [GET => '/foo.yml'],
+    {
+        path => '/foo.yml',
         content_type => qr'text/x-yaml',
         response => $yaml,
     },
     {
-        request => [GET => '/'],
+        path => '/',
         content_type => qr'text/html',
         response => 'root',
     },
@@ -54,11 +57,12 @@ my @tests = (
 plan tests => scalar(@tests) * 2;
 
 for my $test ( @tests ) {
-    my $response = dancer_response(@{ $test->{request} });
-    like($response->header('Content-Type'), 
+    my $response = $plack_test->request( GET $test->{path} );
+
+    like($response->header('Content-Type'),
        $test->{content_type},
        "headers have content_type set to ".$test->{content_type});
 
-    is( $response->{content}, $test->{response},
+    is( $response->content, $test->{response},
         "\$data has been encoded" );
 }

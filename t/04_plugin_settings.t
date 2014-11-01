@@ -2,6 +2,8 @@ use strict;
 use warnings;
 use Module::Runtime qw(use_module);
 use Test::More import => ['!pass'];
+use Plack::Test;
+use HTTP::Request::Common;
 
 plan skip_all => "JSON is needed for this test"
     unless use_module('JSON');
@@ -27,27 +29,27 @@ my $yaml = YAML::Dump($data);
     };
 }
 
-use Dancer2::Test apps => [ 'Webservice' ];
+my $plack_test = Plack::Test->create(Webservice->to_app);
 
 my @tests = (
     {
-        request => [GET => '/'],
+        path => '/',
         response => 'root',
     },
-    { 
-        request => [GET => '/foo.json'],
+    {
+        path => '/foo.json',
         response => $json,
     },
-    { 
-        request => [GET => '/foo.yml'],
+    {
+        path => '/foo.yml',
         response => $yaml,
     },
-    { 
-        request => [GET => '/foo.foobar'],
+    {
+        path => '/foo.foobar',
         response => qr/unsupported format requested: foobar/ms,
     },
     {
-        request => [GET => '/'],
+        path => '/',
         response => 'root',
     },
 );
@@ -55,14 +57,15 @@ my @tests = (
 plan tests => scalar(@tests);
 
 for my $test ( @tests ) {
-    my $response = dancer_response(@{$test->{request}});
+    my $response = $plack_test->request( GET $test->{path} );
+
     if (ref($test->{response})) {
-        like( $response->{content}, $test->{response},
-            "response looks good for '@{$test->{request}}'" );
+        like( $response->content, $test->{response},
+            "response looks good for 'GET $test->{path}'" );
     }
     else {
-        is( $response->{content}, $test->{response},
-            "response looks good for '@{$test->{request}}'" );
+        is( $response->content, $test->{response},
+            "response looks good for 'GET $test->{path}'" );
     }
 }
 

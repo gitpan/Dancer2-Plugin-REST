@@ -1,5 +1,13 @@
 Revision history for Dancer2-Plugin-REST
 
+0.25 2014-11-01
+ [BUG FIXES]
+ - Change tests to use Pack::Test instead of the deprecated Dancer2::Test.
+   (GH#3, Davs)
+
+ [STATISTICS]
+ - code churn: 4 files changed, 62 insertions(+), 41 deletions(-)
+
 0.24 2014-09-01
  [MISC]
  - D2 v1.150000 is out, turn v0.23_00 into general availability release.

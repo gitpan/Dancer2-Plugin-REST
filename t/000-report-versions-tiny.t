@@ -53,7 +53,6 @@ eval { $v .= pmver('Class::Load','any version') };
 eval { $v .= pmver('Dancer2','0.149000_01') };
 eval { $v .= pmver('Dancer2::Core::Request','any version') };
 eval { $v .= pmver('Dancer2::Plugin','any version') };
-eval { $v .= pmver('Dancer2::Test','any version') };
 eval { $v .= pmver('Data::Dumper','any version') };
 eval { $v .= pmver('File::Spec','any version') };
 eval { $v .= pmver('HTTP::Request::Common','any version') };
